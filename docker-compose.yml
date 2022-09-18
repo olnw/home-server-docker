@@ -9,7 +9,7 @@ services:
       - PGID=1000
       - TZ=Australia/Hobart
     volumes:
-      - /mnt/hdd/docker/appdata/jellyfin:/config
+      - /docker/appdata/jellyfin:/config
       - /mnt/hdd/data/media:/data/media
     ports:
       - 8096:8096
@@ -37,7 +37,7 @@ services:
       - TZ=Australia/Hobart
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/hdd/docker/appdata/radarr:/config
+      - /docker/appdata/radarr:/config
       - /mnt/hdd/data:/data
 
   sonarr:
@@ -55,6 +55,6 @@ services:
       - TZ=Australia/Hobart
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/hdd/docker/appdata/sonarr:/config
+      - /docker/appdata/sonarr:/config
       - /mnt/hdd/data:/data
 
