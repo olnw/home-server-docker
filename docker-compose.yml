@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   jellyfin:
     image: jellyfin/jellyfin
@@ -22,37 +23,38 @@ services:
               capabilities: [gpu]
 
   radarr:
-      container_name: radarr
-      image: cr.hotio.dev/hotio/radarr:latest
-      restart: unless-stopped
-      logging:
-        driver: json-file
-      network_mode: bridge
-      ports:
-        - 7878:7878
-      environment:
-        - PUID=1000
-        - PGID=1000
-        - TZ=Australia/Hobart
-      volumes:
-        - /etc/localtime:/etc/localtime:ro
-        - /mnt/hdd/docker/appdata/radarr:/config
-        - /mnt/hdd/data:/data
+    container_name: radarr
+    image: cr.hotio.dev/hotio/radarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    network_mode: bridge
+    ports:
+      - 7878:7878
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Hobart
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/hdd/docker/appdata/radarr:/config
+      - /mnt/hdd/data:/data
 
   sonarr:
-      container_name: sonarr
-      image: cr.hotio.dev/hotio/sonarr:latest
-      restart: unless-stopped
-      logging:
-        driver: json-file
-      network_mode: bridge
-      ports:
-        - 8989:8989
-      environment:
-        - PUID=1000
-        - PGID=1000
-        - TZ=Australia/Hobart
-      volumes:
-        - /etc/localtime:/etc/localtime:ro
-        - /mnt/hdd/docker/appdata/sonarr:/config
-        - /mnt/hdd/data:/data
+    container_name: sonarr
+    image: cr.hotio.dev/hotio/sonarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    network_mode: bridge
+    ports:
+      - 8989:8989
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Hobart
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/hdd/docker/appdata/sonarr:/config
+      - /mnt/hdd/data:/data
+
