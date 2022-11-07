@@ -1,0 +1,29 @@
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# systemd generates mount units based on this file, see systemd.mount(5).
+# Please run 'systemctl daemon-reload' after making changes here.
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/nvme0n1p3 during installation
+UUID=3b3f23ef-f426-43b5-8f13-562eb583aa8c /               btrfs   noatime,subvol=@rootfs 0       0
+# /boot/efi was on /dev/nvme0n1p1 during installation
+UUID=9610-D8E9  /boot/efi       vfat    umask=0077      0       1
+# swap was on /dev/nvme0n1p2 during installation
+UUID=5d5be39e-9392-4251-a2df-74578d612796 none            swap    sw              0       0
+
+LABEL=parity1	/mnt/parity/disk1	ext4	noatime	0	2
+
+LABEL=data1	/mnt/data/disk1	btrfs	noatime,subvol=/data	0	0
+LABEL=data1	/mnt/snapraid-content/disk1	btrfs	noatime,subvol=/snapraid-content	0	0
+
+LABEL=data2	/mnt/data/disk2	btrfs	noatime,subvol=/data	0	0
+LABEL=data2	/mnt/snapraid-content/disk2	btrfs	noatime,subvol=/snapraid-content	0	0
+
+LABEL=data3	/mnt/data/disk3	btrfs	noatime,subvol=/data	0	0
+LABEL=data3	/mnt/snapraid-content/disk3	btrfs	noatime,subvol=/snapraid-content	0	0
+
+/mnt/data/disk*	/mnt/mergerfs-pool	fuse.mergerfs	noatime,allow_other,use_ino,cache.files=partial,dropcacheonclose=true,category.create=mfs,fsname=mergerfs-pool	0	0
