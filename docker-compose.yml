@@ -27,7 +27,7 @@ services:
     volumes:
       - /var/docker/jellyfin/config:/config
       - /var/docker/jellyfin/cache:/cache
-      - /mnt/mergerfs-pool/my-media/libraries:/my-media/libraries
+      - /mnt/mergerfs-pool/my-media/libraries:/my-media/libraries:ro
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
       - /dev/dri/card0:/dev/dri/card0
