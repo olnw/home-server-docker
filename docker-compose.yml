@@ -121,4 +121,4 @@ services:
     tty: true
     volumes:
      - /mnt/mergerfs-pool:/mnt/mergerfs-pool:z
-    command: '-s "mergerfs-pool;/mnt/mergerfs-pool;yes;no;no" -u "user;pass" -p'
+    command: '-s "mergerfs-pool;/mnt/mergerfs-pool;yes;no;no" -u "user;pass"'
