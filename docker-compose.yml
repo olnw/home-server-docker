@@ -25,6 +25,7 @@ services:
       - SERVER_CITIES=
       - TZ=Australia/Hobart
       - FIREWALL_VPN_INPUT_PORTS=
+    restart: unless-stopped
 
   jellyfin:
     image: jellyfin/jellyfin
