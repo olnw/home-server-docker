@@ -5,7 +5,7 @@ services:
     image: ckulka/baikal:nginx
     restart: always
     ports:
-      - "80:80"
+      - "1212:80"
     volumes:
       - baikal_config:/var/www/baikal/config
       - baikal_data:/var/www/baikal/Specific
@@ -57,11 +57,11 @@ services:
       - /var/docker/komga/config:/config
       - /mnt/mergerfs-pool/my-media/libraries/komga:/data
     ports:
-      - 6767:6767
+      - 2323:2323
     environment:
       - PUID=1000
       - PGID=1000
-      - SERVER_PORT=6767
+      - SERVER_PORT=2323
 
   qbittorrent:
     container_name: qbittorrent
