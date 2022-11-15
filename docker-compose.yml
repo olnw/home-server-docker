@@ -132,6 +132,18 @@ services:
       - baikal_config:/var/www/baikal/config
       - baikal_data:/var/www/baikal/Specific
 
+  syncthing:
+    image: syncthing/syncthing
+    container_name: syncthing
+    hostname: debian-server-syncthing
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /var/docker/syncthing:/var/syncthing
+    network_mode: host
+    restart: unless-stopped
+
 volumes:
   baikal_config:
   baikal_data:
