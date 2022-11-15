@@ -3,7 +3,7 @@ version: "3.8"
 services:
   baikal:
     image: ckulka/baikal:nginx
-    restart: always
+    restart: unless-stopped
     ports:
       - "80:80"
     volumes:
@@ -13,6 +13,7 @@ services:
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun
+    restart: unless-stopped
     cap_add:
       - NET_ADMIN
     ports:
@@ -27,11 +28,11 @@ services:
       - SERVER_CITIES=
       - TZ=Australia/Hobart
       - FIREWALL_VPN_INPUT_PORTS=
-    restart: unless-stopped
 
   jellyfin:
     image: jellyfin/jellyfin
     container_name: jellyfin
+    restart: unless-stopped
     environment:
       - PUID=1000
       - PGID=1000
@@ -45,11 +46,10 @@ services:
       - /dev/dri/card0:/dev/dri/card0
     ports:
       - 8096:8096
-    restart: unless-stopped
 
   komga:
-    container_name: komga
     image: gotson/komga
+    container_name: komga
     restart: unless-stopped
     network_mode: bridge
     volumes:
@@ -64,8 +64,9 @@ services:
       - SERVER_PORT=6767
 
   qbittorrent:
-    container_name: qbittorrent
     image: cr.hotio.dev/hotio/qbittorrent
+    container_name: qbittorrent
+    restart: unless-stopped
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
@@ -77,12 +78,12 @@ services:
       - /mnt/mergerfs-pool/my-media/torrents:/my-media/torrents
 
   radarr:
-    container_name: radarr
     image: cr.hotio.dev/hotio/radarr:latest
+    container_name: radarr
     restart: unless-stopped
+    network_mode: "service:gluetun"
     logging:
       driver: json-file
-    network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
@@ -93,8 +94,8 @@ services:
       - /mnt/mergerfs-pool/my-media:/my-media
 
   samba:
-    container_name: samba
     image: dperson/samba
+    container_name: samba
     restart: unless-stopped
     environment:
       - PUID=1000
@@ -116,12 +117,12 @@ services:
     command: '-s "mergerfs-pool;/mnt/mergerfs-pool;yes;no;no" -u "user;pass"'
 
   sonarr:
-    container_name: sonarr
     image: cr.hotio.dev/hotio/sonarr:latest
+    container_name: sonarr
     restart: unless-stopped
+    network_mode: "service:gluetun"
     logging:
       driver: json-file
-    network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
@@ -134,14 +135,14 @@ services:
   syncthing:
     image: syncthing/syncthing
     container_name: syncthing
+    restart: unless-stopped
+    network_mode: host
     hostname: debian-server-syncthing
     environment:
       - PUID=1000
       - PGID=1000
     volumes:
       - /var/docker/syncthing:/var/syncthing
-    network_mode: host
-    restart: unless-stopped
 
 volumes:
   baikal_config:
