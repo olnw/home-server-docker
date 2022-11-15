@@ -1,6 +1,15 @@
 version: "3.8"
 
 services:
+  baikal:
+    image: ckulka/baikal:nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - baikal_config:/var/www/baikal/config
+      - baikal_data:/var/www/baikal/Specific
+
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun
@@ -35,6 +44,35 @@ services:
       - 8096:8096
     restart: unless-stopped
 
+  komga:
+    container_name: komga
+    image: gotson/komga
+    restart: unless-stopped
+    network_mode: bridge
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /var/docker/komga/config:/config
+      - /mnt/mergerfs-pool/my-media/libraries/komga:/data
+    ports:
+      - 6767:6767
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - SERVER_PORT=6767
+
+  qbittorrent:
+    container_name: qbittorrent
+    image: cr.hotio.dev/hotio/qbittorrent
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Australia/Hobart
+    volumes:
+      - /var/docker/qbittorrent/config:/config
+      - /mnt/mergerfs-pool/my-media/torrents:/my-media/torrents
+
   radarr:
     container_name: radarr
     image: cr.hotio.dev/hotio/radarr:latest
@@ -52,53 +90,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/docker/radarr/config:/config
       - /mnt/mergerfs-pool/my-media:/my-media
-
-  sonarr:
-    container_name: sonarr
-    image: cr.hotio.dev/hotio/sonarr:latest
-    restart: unless-stopped
-    logging:
-      driver: json-file
-    network_mode: bridge
-    ports:
-      - 8989:8989
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Australia/Hobart
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/docker/sonarr/config:/config
-      - /mnt/mergerfs-pool/my-media:/my-media
-
-  qbittorrent:
-    container_name: qbittorrent
-    image: cr.hotio.dev/hotio/qbittorrent
-    network_mode: "service:gluetun"
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - UMASK=002
-      - TZ=Australia/Hobart
-    volumes:
-      - /var/docker/qbittorrent/config:/config
-      - /mnt/mergerfs-pool/my-media/torrents:/my-media/torrents
-
-  komga:
-    container_name: komga
-    image: gotson/komga
-    restart: unless-stopped
-    network_mode: bridge
-    volumes:
-      - /etc/timezone:/etc/timezone:ro
-      - /var/docker/komga/config:/config
-      - /mnt/mergerfs-pool/my-media/libraries/komga:/data
-    ports:
-      - 6767:6767
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - SERVER_PORT=6767
 
   samba:
     container_name: samba
@@ -123,14 +114,23 @@ services:
       - /mnt/mergerfs-pool:/mnt/mergerfs-pool:z
     command: '-s "mergerfs-pool;/mnt/mergerfs-pool;yes;no;no" -u "user;pass"'
 
-  baikal:
-    image: ckulka/baikal:nginx
-    restart: always
+  sonarr:
+    container_name: sonarr
+    image: cr.hotio.dev/hotio/sonarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    network_mode: bridge
     ports:
-      - "80:80"
+      - 8989:8989
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Hobart
     volumes:
-      - baikal_config:/var/www/baikal/config
-      - baikal_data:/var/www/baikal/Specific
+      - /etc/localtime:/etc/localtime:ro
+      - /var/docker/sonarr/config:/config
+      - /mnt/mergerfs-pool/my-media:/my-media
 
   syncthing:
     image: syncthing/syncthing
