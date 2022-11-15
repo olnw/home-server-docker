@@ -16,7 +16,9 @@ services:
     cap_add:
       - NET_ADMIN
     ports:
-      - "8080:8080"
+      - "8080:8080" # qbittorrent
+      - "7878:7878" # radarr
+      - "8989:8989" # sonarr
     environment:
       - VPN_SERVICE_PROVIDER=mullvad
       - VPN_TYPE=wireguard
@@ -80,9 +82,7 @@ services:
     restart: unless-stopped
     logging:
       driver: json-file
-    network_mode: bridge
-    ports:
-      - 7878:7878
+    network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
@@ -121,9 +121,7 @@ services:
     restart: unless-stopped
     logging:
       driver: json-file
-    network_mode: bridge
-    ports:
-      - 8989:8989
+    network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
